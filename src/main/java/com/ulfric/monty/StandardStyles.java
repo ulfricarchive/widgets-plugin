@@ -49,4 +49,9 @@ public enum StandardStyles implements Style { // TODO text wrapping
 		}
 	};
 
+	@Override
+	public final String getName() {
+		return name();
+	}
+
 }
