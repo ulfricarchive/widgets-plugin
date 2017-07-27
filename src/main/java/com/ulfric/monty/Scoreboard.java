@@ -64,13 +64,13 @@ public final class Scoreboard {
 	}
 
 	public void update() { // TODO element removal
-		Player player = players.isEmpty() ? null : players.get(0);
+		Player player = players.isEmpty() ? null : players.get(0); // TODO static utility
 
 		int changed = 0;
 		for (Class<? extends Element> update : this.update) {
 			for (Entry entry : entries) {
 				if (changed != 0) {
-					entry.bump(changed); // TODO
+					entry.bump(changed);
 				}
 
 				Element elementOnBoard = entry.element;

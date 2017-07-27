@@ -1,9 +1,28 @@
 package com.ulfric.monty;
 
-public class Text {
+import com.ulfric.commons.value.Bean;
 
-	public Text() {
-		
+import java.util.List;
+
+public class Text extends Bean {
+
+	private String title;
+	private List<String> body;
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public List<String> getBody() {
+		return body;
+	}
+
+	public void setBody(List<String> body) {
+		this.body = body;
 	}
 
 }
