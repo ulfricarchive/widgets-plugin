@@ -2,24 +2,25 @@ package com.ulfric.monty;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.scoreboard.ScoreboardManager;
 
 import java.util.Random;
 
 public class ScoreboardHelper {
 
-	public static void main(String[] args) {
-		System.out.println(randomInvisibleEntry());
-	}
-
 	private static final Random RANDOM = new Random();
 	private static final ChatColor[] COLORS = ChatColor.values();
 
-	public static Scoreboard newScoreboard() {
-		return new Scoreboard(Bukkit.getScoreboardManager());
+	public static org.bukkit.scoreboard.Scoreboard getBukkitGlobalScoreboard() {
+		return defaultManager().getMainScoreboard();
 	}
 
-	public static org.bukkit.scoreboard.Scoreboard getBukkitGlobalScoreboard() {
-		return Bukkit.getScoreboardManager().getMainScoreboard();
+	public static org.bukkit.scoreboard.Scoreboard getNewBukkitScoreboard() {
+		return defaultManager().getNewScoreboard();
+	}
+
+	public static ScoreboardManager defaultManager() {
+		return Bukkit.getScoreboardManager();
 	}
 
 	static String randomInvisibleEntry() {

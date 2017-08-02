@@ -4,16 +4,20 @@ import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
-import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.scoreboard.Team;
 
 import org.apache.commons.collections4.SetUtils;
+import org.apache.commons.collections4.iterators.ReverseListIterator;
 
 import com.ulfric.commons.collection.ListHelper;
 import com.ulfric.commons.collection.MapHelper;
+import com.ulfric.servix.services.locale.Locale;
+import com.ulfric.servix.services.locale.LocaleService;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -23,134 +27,220 @@ import java.util.concurrent.ConcurrentMap;
 public final class Scoreboard {
 
 	private static final String DUMMY_CRITERIA = "dummy";
-	private static final ConcurrentMap<UUID, Scoreboard> SCOREBOARS_BY_PLAYER = MapHelper.newConcurrentMap(2);
+	private static final ConcurrentMap<UUID, Scoreboard> SCOREBOARDS = MapHelper.newConcurrentMap(2);
 
-	static Collection<Scoreboard> getAllScoreboardsMutableView() {
-		return SCOREBOARS_BY_PLAYER.values();
+	public static Scoreboard create(Player player) {
+		Objects.requireNonNull(player, "player");
+
+		org.bukkit.scoreboard.Scoreboard scoreboard = ScoreboardHelper.getNewBukkitScoreboard();
+		Locale locale = LocaleService.get().getLocale(player.getLocale());
+		Options options = OptionsService.get().getOptions(player.getUniqueId());
+
+		Scoreboard created = new Scoreboard(scoreboard, locale, options);
+		register(player, created);
+		return created;
 	}
 
-	static void setScoreboard(Player player, Scoreboard scoreboard) { // TODO fix race condition
-		player.setScoreboard(scoreboard.scoreboard);
-		SCOREBOARS_BY_PLAYER.put(player.getUniqueId(), scoreboard);
-	}
-
-	static void clearScoreboard(Player player) { // TODO fix race condition
-		Scoreboard scoreboard = SCOREBOARS_BY_PLAYER.remove(player.getUniqueId());
-		if (scoreboard != null) {
-			if (scoreboard.players.remove(player)) {
-				player.setScoreboard(ScoreboardHelper.getBukkitGlobalScoreboard());
-			}
+	private static void register(Player player, Scoreboard scoreboard) {
+		scoreboard.players.add(player);
+		Scoreboard old = SCOREBOARDS.put(player.getUniqueId(), scoreboard);
+		if (old != null) {
+			old.players.remove(player);
 		}
+		player.setScoreboard(scoreboard.scoreboard);
 	}
 
-	public static Scoreboard getScoreboard(Player player) {
-		return SCOREBOARS_BY_PLAYER.get(player.getUniqueId());
+	public static void clearScoreboard(Player player) {
+		Objects.requireNonNull(player, "player");
+
+		Scoreboard scoreboard = SCOREBOARDS.remove(player.getUniqueId());
+		scoreboard.players.remove(player);
+	}
+
+	static Collection<Scoreboard> getAllScoreboardsMutableView() { // TODO better solution
+		return SCOREBOARDS.values();
 	}
 
 	private final org.bukkit.scoreboard.Scoreboard scoreboard;
 	private final Objective objective;
+	private final Options options;
 	private final List<Entry> entries = new ArrayList<>();
 	private final List<Player> players = new ArrayList<>();
-	private final Style style = StandardStyles.FLAT; // TODO implement style changing
-
 	private final Set<Class<? extends Element>> update = SetUtils.newIdentityHashSet();
+	private final Set<Element> removed = SetUtils.newIdentityHashSet();
 
-	Scoreboard(ScoreboardManager manager) {
-		Objects.requireNonNull(manager, "manager");
+	private Scoreboard(org.bukkit.scoreboard.Scoreboard scoreboard, Locale locale, Options options) {
+		this.scoreboard = scoreboard;
+		this.options = options;
 
-		this.scoreboard = manager.getNewScoreboard();
-		this.objective = scoreboard.registerNewObjective("TODO -- title", DUMMY_CRITERIA); // TODO
-		objective.setDisplaySlot(DisplaySlot.SIDEBAR);
+		String title = locale.getMessage("scoreboard-title");
+		this.objective = scoreboard.registerNewObjective(title, DUMMY_CRITERIA);
+		this.objective.setDisplaySlot(DisplaySlot.SIDEBAR);
 	}
 
-	public void update() { // TODO element removal
-		Player player = players.isEmpty() ? null : players.get(0); // TODO static utility
+	public void add(Element element) {
+		Objects.requireNonNull(element, "element");
 
-		int changed = 0;
-		for (Class<? extends Element> update : this.update) {
-			for (Entry entry : entries) {
-				if (changed != 0) {
-					entry.bump(changed);
+		this.entries.add(new Entry(element));
+		queueUpdate(element.getClass());
+	}
+
+	public void remove(Element element) {
+		Objects.requireNonNull(element, "element");
+
+		removed.add(element);
+	}
+
+	public void queueUpdate(Class<? extends Element> element) {
+		Objects.requireNonNull(element, "element");
+
+		update.add(element);
+	}
+
+	public void update() {
+		if (!needsUpdate()) {
+			return;
+		}
+
+		Player agent = getPlayerForUpdate();
+
+		if (agent == null) {
+			return;
+		}
+
+		update(agent);
+	}
+
+	private void update(Player agent) {
+		processRemovals();
+		processUpdates(agent);
+		updateScores();
+	}
+
+	private void processUpdates(Player agent) {
+		Style style = getStyle();
+		for (Entry entry : entries) {
+			for (Class<? extends Element> update : this.update) {
+				Element element = entry.element;
+				if (!update.isInstance(element)) {
+					continue;
 				}
 
-				Element elementOnBoard = entry.element;
+				Text text = element.apply(agent);
+				List<String> content = style.apply(text);
+				entry.displayContent(content);
+				
+				break;
+			}
+		}
+		update.clear();
+	}
 
-				if (update.isInstance(elementOnBoard)) {
-					List<RawEntry> rawEntries = entry.entries;
-					Text text = elementOnBoard.apply(player);
-					List<String> setOnBoard = style.apply(text);
-					int size = setOnBoard.size();
-					int difference = rawEntries.size() - size;
-					changed += difference;
-					entry.resize(size);
+	private Style getStyle() {
+		Style style = options.getStyle();
+		return style == null ? StandardStyles.defaultStyle() : style;
+	}
 
-					for (int x = 0; x < size; x++) {
-						rawEntries.get(x).display(setOnBoard.get(x));
-					}
-				}
+	private void processRemovals() {
+		removed.forEach(this::processRemoval);
+		removed.clear();
+	}
+
+	private void processRemoval(Element removed) {
+		Iterator<Entry> entries = this.entries.iterator();
+		while (entries.hasNext()) {
+			Entry entry = entries.next();
+			if (entry.element == removed) {
+				entries.remove();
+				entry.unregister();
 			}
 		}
 	}
 
-	public void queueUpdate(Class<? extends Element> update) {
-		this.update.add(update);
+	private void updateScores() {
+		int score = 0;
+		Iterator<Entry> entries = new ReverseListIterator<>(this.entries);
+		while (entries.hasNext()) {
+			Entry entry = entries.next();
+
+			Iterator<Row> rows = new ReverseListIterator<>(entry.rows);
+			while (rows.hasNext()) {
+				Row row = rows.next();
+				row.setScore(score++);
+			}
+		}
 	}
 
-	public void add(Element element) {
-		entries.add(new Entry(element));
+	private boolean needsUpdate() {
+		return !update.isEmpty() || !removed.isEmpty();
 	}
 
-	final class Entry {
+	private Player getPlayerForUpdate() {
+		return players.isEmpty() ? null : players.get(0);
+	}
 
-		final List<RawEntry> entries = new ArrayList<>();  // TODO trove int map
-		final Element element;
+	private final class Entry {
+		private final Element element;
+		final List<Row> rows = new ArrayList<>();
 
 		Entry(Element element) {
 			this.element = element;
 		}
 
-		void bump(int amount) {
-			entries.forEach(entry -> entry.score.setScore(entry.score.getScore() + amount));
+		public void displayContent(List<String> content) {
+			if (content == null) {
+				displayContent(Collections.emptyList());
+				return;
+			}
+
+			resizeTo(content.size());
+
+			List<Row> rows = this.rows;
+			for (int x = 0, l = content.size(); x < l; x++) { // TODO "parallel iterator"
+				rows.get(x).display(content.get(x));
+			}
 		}
 
-		void resize(int size) {
-			int currentSize = entries.size();
+		private void resizeTo(int size) {
+			int currentSize = rows.size();
 
 			if (currentSize == size) {
 				return;
 			}
 
 			if (currentSize > size) {
-				ListHelper.cutToSize(entries, size, RawEntry::delete);
+				ListHelper.cutToSize(rows, size, Row::unregister);
 			} else {
-				ListHelper.growToSize(entries, size, ignore -> newEntry());
+				ListHelper.growToSize(rows, size, Row::new);
 			}
 		}
 
-		RawEntry newEntry() {
-			int row = entries.isEmpty() ? 0 : (entries.get(entries.size() - 1).score.getScore() + 1); // TODO optimize for resize?
-
-			String entry = ScoreboardHelper.randomInvisibleEntry();
-
-			Team team = scoreboard.registerNewTeam(Integer.toString(row));
-			team.addEntry(entry);
-
-			Score score = objective.getScore(entry);
-			score.setScore(row);
-			return new RawEntry(team, score);
+		public void unregister() {
+			rows.forEach(Row::unregister);
 		}
 	}
 
-	final class RawEntry {
-		final Team team;
-		final Score score;
+	private final class Row {
+		private final Team team;
+		private final Score score;
 
-		RawEntry(Team team, Score score) {
-			this.team = team;
-			this.score = score;
+		Row() {
+			String entry = ScoreboardHelper.randomInvisibleEntry(); // TODO validate uniqueness
+			this.team = scoreboard.registerNewTeam(entry);
+			this.team.addEntry(entry);
+			this.score = objective.getScore(entry);
 		}
 
-		void display(String text) {
+		public void setScore(int score) {
+			this.score.setScore(score);
+		}
+
+		public void unregister() {
+			team.unregister();
+			scoreboard.resetScores(score.getEntry()); // TODO is this correct?
+		}
+
+		public void display(String text) {
 			if (isBig(text)) {
 				displayBig(text);
 				return;
@@ -159,16 +249,11 @@ public final class Scoreboard {
 			displaySmall(text);
 		}
 
-		void delete() {
-			team.unregister();
-			scoreboard.resetScores(score.getEntry()); // TODO is this correct?
-		}
-
 		private boolean isBig(String text) {
 			return text.length() > 16;
 		}
 
-		private void displayBig(String text) {
+		private void displayBig(String text) { // TODO display huge?
 			String prefix = text.substring(0, 16);
 			String suffix = text.substring(16, Integer.max(16, text.length()));
 			team.setPrefix(prefix);
@@ -179,7 +264,7 @@ public final class Scoreboard {
 			team.setPrefix(text);
 
 			if (team.getSuffix() != null) {
-				team.setSuffix(null);
+				team.setSuffix("");
 			}
 		}
 	}

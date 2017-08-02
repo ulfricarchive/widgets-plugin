@@ -13,18 +13,23 @@ final class ScoreboardThread extends Thread { // TODO should this run in the buk
 	public void run() {
 		Collection<Scoreboard> scoreboards = Scoreboard.getAllScoreboardsMutableView();
 		while (running()) {
-			scoreboards.forEach(Scoreboard::update);
+			scoreboards.forEach(this::update);
 		}
 	}
 
 	private boolean running() {
 		try {
-			TimeUnit.SECONDS.sleep(1);
+			TimeUnit.MILLISECONDS.sleep(100); // TODO more often
 			return true;
 		} catch (InterruptedException thatsOk) {
 			// TODO log shutdown?
 			return false;
 		}
+	}
+
+	private void update(Scoreboard scoreboard) {
+		scoreboard.queueUpdate(TimerElement.class);
+		scoreboard.update();
 	}
 
 }

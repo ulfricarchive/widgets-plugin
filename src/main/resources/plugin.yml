@@ -1,0 +1,6 @@
+name: Monty
+main: com.ulfric.monty.Monty
+version: 1.0.0
+author: Ulfric Projects
+load: STARTUP
+depend: [Platform]

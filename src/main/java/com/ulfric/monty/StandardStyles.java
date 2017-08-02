@@ -6,10 +6,11 @@ import java.util.List;
 
 public enum StandardStyles implements Style { // TODO text wrapping
 
-	FLAT {
+	FLAT { // TODO duplicate code with HEADER
 		@Override
 		public List<String> apply(Text entry) {
 			List<String> styled = new ArrayList<>();
+			styled.add(BLANK_LINE);
 
 			if (entry.getTitle() != null) {
 				styled.add(entry.getTitle());
@@ -19,14 +20,15 @@ public enum StandardStyles implements Style { // TODO text wrapping
 				styled.addAll(entry.getBody());
 			}
 
-			return styled;
+			return styled.size() == 1 ? Collections.emptyList() : styled;
 		}
 	},
 
-	HEADER {
+	HEADER { // TODO duplicate code with FLAT
 		@Override
 		public List<String> apply(Text entry) {
 			List<String> styled = new ArrayList<>();
+			styled.add(BLANK_LINE);
 
 			if (entry.getTitle() != null) {
 				styled.add(entry.getTitle());
@@ -34,11 +36,11 @@ public enum StandardStyles implements Style { // TODO text wrapping
 
 			if (entry.getBody() != null) {
 				entry.getBody().stream()
-					.map(body -> " " + body)
+					.map(body -> " " + body) // TODO does two spaces look better?
 					.forEach(styled::add);
 			}
 
-			return styled;
+			return styled.size() == 1 ? Collections.emptyList() : styled;
 		}
 	},
 
@@ -47,7 +49,13 @@ public enum StandardStyles implements Style { // TODO text wrapping
 		public List<String> apply(Text entry) {
 			return entry.getBody() == null ? Collections.emptyList() : entry.getBody();
 		}
-	};
+	}; // TODO "TREE" style
+
+	public static StandardStyles defaultStyle() {
+		return FLAT;
+	}
+
+	private static final String BLANK_LINE = "";
 
 	@Override
 	public final String getName() {

@@ -7,6 +7,7 @@ public class ScoreboardContainer extends Container {
 	private Thread scoreboard;
 
 	public ScoreboardContainer() {
+		install(OptionsService.class);
 		install(ScoreboardListener.class);
 
 		addBootHook(this::startScoreboardThread);
