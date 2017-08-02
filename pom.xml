@@ -13,7 +13,6 @@
 	<groupId>com.ulfric.monty</groupId>
 	<artifactId>monty</artifactId>
 	<version>1.0.0</version>
-	<name>Monty</name>
 
 	<dependencies>
 		<dependency>
