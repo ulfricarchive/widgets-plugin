@@ -20,6 +20,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentMap;
@@ -55,6 +56,10 @@ public final class Scoreboard {
 
 		Scoreboard scoreboard = SCOREBOARDS.remove(player.getUniqueId());
 		scoreboard.players.remove(player);
+	}
+
+	public static Optional<Scoreboard> getScoreboard(Player player) {
+		return Optional.ofNullable(SCOREBOARDS.get(player.getUniqueId()));
 	}
 
 	static Collection<Scoreboard> getAllScoreboardsMutableView() { // TODO better solution
@@ -129,7 +134,7 @@ public final class Scoreboard {
 				Text text = element.apply(agent);
 				List<String> content = style.apply(text);
 				entry.displayContent(content);
-				
+
 				break;
 			}
 		}
