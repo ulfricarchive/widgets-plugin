@@ -25,7 +25,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentMap;
 
-public final class Scoreboard {
+public final class Scoreboard { // TODO element priorities
 
 	private static final String DUMMY_CRITERIA = "dummy";
 	private static final ConcurrentMap<UUID, Scoreboard> SCOREBOARDS = MapHelper.newConcurrentMap(2);
@@ -86,7 +86,8 @@ public final class Scoreboard {
 	public void add(Element element) {
 		Objects.requireNonNull(element, "element");
 
-		this.entries.add(new Entry(element));
+		entries.add(new Entry(element));
+		Collections.sort(entries);
 		queueUpdate(element.getClass());
 	}
 
@@ -184,7 +185,7 @@ public final class Scoreboard {
 		return players.isEmpty() ? null : players.get(0);
 	}
 
-	private final class Entry {
+	private final class Entry implements Comparable<Entry> {
 		private final Element element;
 		final List<Row> rows = new ArrayList<>();
 
@@ -222,6 +223,11 @@ public final class Scoreboard {
 
 		public void unregister() {
 			rows.forEach(Row::unregister);
+		}
+
+		@Override
+		public int compareTo(Entry entry) {
+			return element.compareTo(entry.element);
 		}
 	}
 
