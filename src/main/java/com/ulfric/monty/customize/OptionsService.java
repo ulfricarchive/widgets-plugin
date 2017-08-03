@@ -1,4 +1,4 @@
-package com.ulfric.monty;
+package com.ulfric.monty.customize;
 
 import com.ulfric.data.database.Database;
 import com.ulfric.data.database.Store;

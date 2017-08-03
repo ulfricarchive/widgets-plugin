@@ -1,4 +1,4 @@
-package com.ulfric.monty;
+package com.ulfric.monty.element;
 
 public enum Priority {
 

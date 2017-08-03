@@ -1,4 +1,4 @@
-package com.ulfric.monty;
+package com.ulfric.monty.text;
 
 import com.ulfric.commons.value.Bean;
 

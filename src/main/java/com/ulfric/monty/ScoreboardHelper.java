@@ -23,7 +23,7 @@ public class ScoreboardHelper {
 		return Bukkit.getScoreboardManager();
 	}
 
-	static String randomInvisibleEntry() {
+	public static String randomInvisibleEntry() {
 		int length = COLORS.length;
 		StringBuilder builder = new StringBuilder(16); // TODO detail 16 and 8 values
 		for (int x = 0; x < 8; x++) {

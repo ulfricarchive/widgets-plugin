@@ -1,4 +1,4 @@
-package com.ulfric.monty;
+package com.ulfric.monty.text;
 
 import org.apache.commons.collections4.map.CaseInsensitiveMap;
 

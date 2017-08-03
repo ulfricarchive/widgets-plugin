@@ -1,4 +1,4 @@
-package com.ulfric.monty;
+package com.ulfric.monty.text;
 
 import java.util.ArrayList;
 import java.util.Collections;

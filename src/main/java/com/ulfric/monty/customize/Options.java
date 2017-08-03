@@ -1,6 +1,7 @@
-package com.ulfric.monty;
+package com.ulfric.monty.customize;
 
 import com.ulfric.commons.value.Bean;
+import com.ulfric.monty.text.StandardStyles;
 
 public class Options extends Bean {
 

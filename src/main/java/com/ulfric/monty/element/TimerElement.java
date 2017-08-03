@@ -1,4 +1,4 @@
-package com.ulfric.monty;
+package com.ulfric.monty.element;
 
 import org.bukkit.entity.Player;
 
@@ -6,6 +6,7 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 
 import com.ulfric.commons.time.TemporalHelper;
+import com.ulfric.monty.text.Text;
 import com.ulfric.tryto.Try;
 
 import java.time.temporal.TemporalAmount;

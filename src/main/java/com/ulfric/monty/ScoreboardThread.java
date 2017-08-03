@@ -1,5 +1,7 @@
 package com.ulfric.monty;
 
+import com.ulfric.monty.element.TimerElement;
+
 import java.util.Collection;
 import java.util.concurrent.TimeUnit;
 

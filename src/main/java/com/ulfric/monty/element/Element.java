@@ -1,6 +1,8 @@
-package com.ulfric.monty;
+package com.ulfric.monty.element;
 
 import org.bukkit.entity.Player;
+
+import com.ulfric.monty.text.Text;
 
 import java.util.Objects;
 import java.util.function.Function;
