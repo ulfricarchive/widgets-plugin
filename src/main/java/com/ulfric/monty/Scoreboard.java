@@ -31,7 +31,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentMap;
 
-public final class Scoreboard { // TODO element priorities
+public final class Scoreboard { // TODO scoreboard.dat?
 
 	private static final String DUMMY_CRITERIA = "dummy";
 	private static final ConcurrentMap<UUID, Scoreboard> SCOREBOARDS = MapHelper.newConcurrentMap(2);

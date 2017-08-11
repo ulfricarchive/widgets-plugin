@@ -7,7 +7,7 @@ import com.google.common.cache.CacheBuilder;
 
 import com.ulfric.commons.time.TemporalHelper;
 import com.ulfric.monty.text.Text;
-import com.ulfric.tryto.Try;
+import com.ulfric.tryto.TryTo;
 
 import java.time.temporal.TemporalAmount;
 import java.util.Objects;
@@ -36,7 +36,7 @@ public abstract class TimerElement extends Element {
 
 	@Override
 	public final Text apply(Player player) {
-		return Try.toGet(() -> cache.get(player, () -> readTimer(player)));
+		return TryTo.get(() -> cache.get(player, () -> readTimer(player)));
 	}
 
 	public abstract Text readTimer(Player player);
