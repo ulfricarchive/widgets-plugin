@@ -1,13 +1,13 @@
 package com.ulfric.monty;
 
+import com.ulfric.dragoon.application.Container;
 import com.ulfric.monty.customize.OptionsService;
-import com.ulfric.platform.Plugin;
 
-public class Monty extends Plugin {
+public class MontyContainer extends Container {
 
 	private Thread scoreboard;
 
-	public Monty() {
+	public MontyContainer() {
 		install(OptionsService.class);
 		install(ScoreboardListener.class);
 
@@ -17,6 +17,7 @@ public class Monty extends Plugin {
 
 	private void startScoreboardThread() {
 		scoreboard = new ScoreboardThread();
+		scoreboard.setContextClassLoader(getClass().getClassLoader());
 		scoreboard.start();
 	}
 
