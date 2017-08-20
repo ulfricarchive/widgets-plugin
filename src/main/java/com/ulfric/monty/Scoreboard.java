@@ -11,6 +11,7 @@ import org.apache.commons.collections4.iterators.ReverseListIterator;
 
 import com.ulfric.commons.collection.ListHelper;
 import com.ulfric.commons.collection.MapHelper;
+import com.ulfric.fancymessage.Message;
 import com.ulfric.monty.customize.Options;
 import com.ulfric.monty.customize.OptionsService;
 import com.ulfric.monty.element.Element;
@@ -31,7 +32,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentMap;
 
-public final class Scoreboard { // TODO scoreboard.dat?
+public final class Scoreboard { // TODO ensure not saving to scoreboard.dat?
 
 	private static final String DUMMY_CRITERIA = "dummy";
 	private static final ConcurrentMap<UUID, Scoreboard> SCOREBOARDS = MapHelper.newConcurrentMap(2);
@@ -40,10 +41,13 @@ public final class Scoreboard { // TODO scoreboard.dat?
 		Objects.requireNonNull(player, "player");
 
 		org.bukkit.scoreboard.Scoreboard scoreboard = ScoreboardHelper.getNewBukkitScoreboard();
+
 		BukkitLocale locale = LocaleService.get().getLocale(player.getLocale());
+		String title = locale == null ? "?" : Message.toLegacy(locale.getMessage("scoreboard-title")); // TODO different default title?
+
 		Options options = OptionsService.get().getOptions(player.getUniqueId());
 
-		Scoreboard created = new Scoreboard(scoreboard, locale, options);
+		Scoreboard created = new Scoreboard(scoreboard, title, options);
 		register(player, created);
 		return created;
 	}
@@ -80,11 +84,10 @@ public final class Scoreboard { // TODO scoreboard.dat?
 	private final Set<Class<? extends Element>> update = SetUtils.newIdentityHashSet();
 	private final Set<Element> removed = SetUtils.newIdentityHashSet();
 
-	private Scoreboard(org.bukkit.scoreboard.Scoreboard scoreboard, BukkitLocale locale, Options options) {
+	private Scoreboard(org.bukkit.scoreboard.Scoreboard scoreboard, String title, Options options) {
 		this.scoreboard = scoreboard;
 		this.options = options;
 
-		String title = locale.getMessage("scoreboard-title");
 		this.objective = scoreboard.registerNewObjective(title, DUMMY_CRITERIA);
 		this.objective.setDisplaySlot(DisplaySlot.SIDEBAR);
 	}
