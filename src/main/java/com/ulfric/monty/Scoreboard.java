@@ -18,7 +18,6 @@ import com.ulfric.monty.element.Element;
 import com.ulfric.monty.text.StandardStyles;
 import com.ulfric.monty.text.Style;
 import com.ulfric.monty.text.Text;
-import com.ulfric.servix.services.locale.BukkitLocale;
 import com.ulfric.servix.services.locale.LocaleService;
 
 import java.util.ArrayList;
@@ -41,10 +40,7 @@ public final class Scoreboard { // TODO ensure not saving to scoreboard.dat?
 		Objects.requireNonNull(player, "player");
 
 		org.bukkit.scoreboard.Scoreboard scoreboard = ScoreboardHelper.getNewBukkitScoreboard();
-
-		BukkitLocale locale = LocaleService.get().getLocale(player.getLocale());
-		String title = locale == null ? "?" : Message.toLegacy(locale.getMessage("scoreboard-title")); // TODO different default title?
-
+		String title = Message.toLegacy(LocaleService.getMessage(player, "scoreboard-title"));
 		Options options = OptionsService.get().getOptions(player.getUniqueId());
 
 		Scoreboard created = new Scoreboard(scoreboard, title, options);
