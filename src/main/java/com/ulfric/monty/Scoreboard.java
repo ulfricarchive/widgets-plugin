@@ -17,7 +17,7 @@ import com.ulfric.monty.element.Element;
 import com.ulfric.monty.text.StandardStyles;
 import com.ulfric.monty.text.Style;
 import com.ulfric.monty.text.Text;
-import com.ulfric.servix.services.locale.Locale;
+import com.ulfric.servix.services.locale.BukkitLocale;
 import com.ulfric.servix.services.locale.LocaleService;
 
 import java.util.ArrayList;
@@ -40,7 +40,7 @@ public final class Scoreboard { // TODO scoreboard.dat?
 		Objects.requireNonNull(player, "player");
 
 		org.bukkit.scoreboard.Scoreboard scoreboard = ScoreboardHelper.getNewBukkitScoreboard();
-		Locale locale = LocaleService.get().getLocale(player.getLocale());
+		BukkitLocale locale = LocaleService.get().getLocale(player.getLocale());
 		Options options = OptionsService.get().getOptions(player.getUniqueId());
 
 		Scoreboard created = new Scoreboard(scoreboard, locale, options);
@@ -80,7 +80,7 @@ public final class Scoreboard { // TODO scoreboard.dat?
 	private final Set<Class<? extends Element>> update = SetUtils.newIdentityHashSet();
 	private final Set<Element> removed = SetUtils.newIdentityHashSet();
 
-	private Scoreboard(org.bukkit.scoreboard.Scoreboard scoreboard, Locale locale, Options options) {
+	private Scoreboard(org.bukkit.scoreboard.Scoreboard scoreboard, BukkitLocale locale, Options options) {
 		this.scoreboard = scoreboard;
 		this.options = options;
 
