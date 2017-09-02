@@ -21,7 +21,7 @@ public class OptionsService implements Service<OptionsService> {
 	}
 
 	public Options getOptions(UUID uniqueId) {
-		return options.getData(uniqueId.toString()).getAs(Options.class);
+		return options.getData(uniqueId).getAs(Options.class);
 	}
 
 }
