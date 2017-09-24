@@ -1,5 +1,5 @@
 name: Scoreboard
-main: com.ulfric.plugin.scoreboard.Scoreboard
+main: com.ulfric.plugin.scoreboard.ScoreboardPlugin
 version: 1.0.0
 author: Ulfric Projects
 load: STARTUP

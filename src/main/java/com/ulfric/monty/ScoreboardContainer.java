@@ -3,11 +3,11 @@ package com.ulfric.monty;
 import com.ulfric.dragoon.application.Container;
 import com.ulfric.monty.customize.OptionsService;
 
-public class MontyContainer extends Container {
+public class ScoreboardContainer extends Container {
 
 	private Thread scoreboard;
 
-	public MontyContainer() {
+	public ScoreboardContainer() {
 		install(OptionsService.class);
 		install(ScoreboardListener.class);
 
