@@ -6,7 +6,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import com.ulfric.dragoon.extension.inject.Inject;
-import com.ulfric.palpatine.Scheduler;
+import com.ulfric.plugin.tasks.Scheduler;
 
 public class ScoreboardListener implements Listener {
 

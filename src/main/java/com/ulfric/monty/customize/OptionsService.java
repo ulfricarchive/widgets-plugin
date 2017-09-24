@@ -1,8 +1,7 @@
 package com.ulfric.monty.customize;
 
-import com.ulfric.data.database.Database;
-import com.ulfric.data.database.Store;
-import com.ulfric.servix.Service;
+import com.ulfric.monty.text.StandardStyles;
+import com.ulfric.plugin.services.Service;
 
 import java.util.UUID;
 
@@ -12,16 +11,17 @@ public class OptionsService implements Service<OptionsService> {
 		return Service.get(OptionsService.class);
 	}
 
-	@Database
-	private Store options;
-
 	@Override
 	public Class<OptionsService> getService() {
 		return OptionsService.class;
 	}
 
-	public Options getOptions(UUID uniqueId) {
-		return options.getData(uniqueId).getAs(Options.class);
+	public Options getOptions(UUID uniqueId) { // TODO actually allow, use database
+		Options options = new Options();
+
+		options.setStyle(StandardStyles.FLAT);
+
+		return options;
 	}
 
 }

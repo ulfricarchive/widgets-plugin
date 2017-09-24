@@ -18,7 +18,7 @@ import com.ulfric.monty.element.Element;
 import com.ulfric.monty.text.StandardStyles;
 import com.ulfric.monty.text.Style;
 import com.ulfric.monty.text.Text;
-import com.ulfric.servix.services.locale.LocaleService;
+import com.ulfric.plugin.locale.LocaleService;
 
 import java.util.ArrayList;
 import java.util.Collection;

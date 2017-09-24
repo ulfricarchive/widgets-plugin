@@ -1,0 +1,6 @@
+name: Scoreboard
+main: com.ulfric.plugin.scoreboard.Scoreboard
+version: 1.0.0
+author: Ulfric Projects
+load: STARTUP
+depend: [Platform, Services, Tasks, Locale]
