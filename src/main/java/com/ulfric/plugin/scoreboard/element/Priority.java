@@ -1,4 +1,4 @@
-package com.ulfric.monty.element;
+package com.ulfric.plugin.scoreboard.element;
 
 public enum Priority {
 

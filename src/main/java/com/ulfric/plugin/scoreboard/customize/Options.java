@@ -1,7 +1,7 @@
-package com.ulfric.monty.customize;
+package com.ulfric.plugin.scoreboard.customize;
 
 import com.ulfric.commons.value.Bean;
-import com.ulfric.monty.text.StandardStyles;
+import com.ulfric.plugin.scoreboard.text.StandardStyles;
 
 public class Options extends Bean {
 

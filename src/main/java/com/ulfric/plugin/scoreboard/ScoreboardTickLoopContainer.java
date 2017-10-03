@@ -1,13 +1,13 @@
-package com.ulfric.monty;
+package com.ulfric.plugin.scoreboard;
 
 import com.ulfric.dragoon.application.Container;
-import com.ulfric.monty.customize.OptionsService;
+import com.ulfric.plugin.scoreboard.customize.OptionsService;
 
-public class ScoreboardContainer extends Container {
+public class ScoreboardTickLoopContainer extends Container {
 
 	private Thread scoreboard;
 
-	public ScoreboardContainer() {
+	public ScoreboardTickLoopContainer() {
 		install(OptionsService.class);
 		install(ScoreboardListener.class);
 

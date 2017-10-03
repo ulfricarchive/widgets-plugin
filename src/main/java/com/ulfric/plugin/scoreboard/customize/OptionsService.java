@@ -1,6 +1,6 @@
-package com.ulfric.monty.customize;
+package com.ulfric.plugin.scoreboard.customize;
 
-import com.ulfric.monty.text.StandardStyles;
+import com.ulfric.plugin.scoreboard.text.StandardStyles;
 import com.ulfric.plugin.services.Service;
 
 import java.util.UUID;

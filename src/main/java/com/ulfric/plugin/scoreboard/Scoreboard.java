@@ -1,4 +1,4 @@
-package com.ulfric.monty;
+package com.ulfric.plugin.scoreboard;
 
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -12,13 +12,13 @@ import org.apache.commons.collections4.iterators.ReverseListIterator;
 import com.ulfric.commons.collection.ListHelper;
 import com.ulfric.commons.collection.MapHelper;
 import com.ulfric.fancymessage.Message;
-import com.ulfric.monty.customize.Options;
-import com.ulfric.monty.customize.OptionsService;
-import com.ulfric.monty.element.Element;
-import com.ulfric.monty.text.StandardStyles;
-import com.ulfric.monty.text.Style;
-import com.ulfric.monty.text.Text;
 import com.ulfric.plugin.locale.LocaleService;
+import com.ulfric.plugin.scoreboard.customize.Options;
+import com.ulfric.plugin.scoreboard.customize.OptionsService;
+import com.ulfric.plugin.scoreboard.element.Element;
+import com.ulfric.plugin.scoreboard.text.StandardStyles;
+import com.ulfric.plugin.scoreboard.text.Style;
+import com.ulfric.plugin.scoreboard.text.Text;
 
 import java.util.ArrayList;
 import java.util.Collection;

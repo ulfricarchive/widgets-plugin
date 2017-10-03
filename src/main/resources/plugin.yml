@@ -2,5 +2,4 @@ name: Scoreboard
 main: com.ulfric.plugin.scoreboard.ScoreboardPlugin
 version: 1.0.0
 author: Ulfric LLC
-load: STARTUP
 depend: [Platform, Services, Tasks, Locale]

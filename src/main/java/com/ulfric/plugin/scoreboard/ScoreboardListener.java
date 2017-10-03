@@ -1,4 +1,4 @@
-package com.ulfric.monty;
+package com.ulfric.plugin.scoreboard;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

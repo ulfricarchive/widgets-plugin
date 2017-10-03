@@ -1,6 +1,6 @@
-package com.ulfric.monty;
+package com.ulfric.plugin.scoreboard;
 
-import com.ulfric.monty.element.TimerElement;
+import com.ulfric.plugin.scoreboard.element.TimerElement;
 
 import java.util.Collection;
 import java.util.concurrent.TimeUnit;

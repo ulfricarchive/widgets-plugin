@@ -1,4 +1,4 @@
-package com.ulfric.monty;
+package com.ulfric.plugin.scoreboard;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

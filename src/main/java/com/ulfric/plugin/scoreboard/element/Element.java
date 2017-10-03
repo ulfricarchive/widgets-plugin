@@ -1,8 +1,8 @@
-package com.ulfric.monty.element;
+package com.ulfric.plugin.scoreboard.element;
 
 import org.bukkit.entity.Player;
 
-import com.ulfric.monty.text.Text;
+import com.ulfric.plugin.scoreboard.text.Text;
 
 import java.util.Objects;
 import java.util.function.Function;

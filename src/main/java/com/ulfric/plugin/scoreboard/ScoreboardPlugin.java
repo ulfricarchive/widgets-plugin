@@ -1,11 +1,11 @@
-package com.ulfric.monty;
+package com.ulfric.plugin.scoreboard;
 
 import com.ulfric.plugin.Plugin;
 
 public class ScoreboardPlugin extends Plugin {
 
 	public ScoreboardPlugin() {
-		install(ScoreboardContainer.class);
+		install(ScoreboardTickLoopContainer.class);
 	}
 
 }

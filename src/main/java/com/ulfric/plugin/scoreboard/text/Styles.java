@@ -1,4 +1,4 @@
-package com.ulfric.monty.text;
+package com.ulfric.plugin.scoreboard.text;
 
 import org.apache.commons.collections4.map.CaseInsensitiveMap;
 
