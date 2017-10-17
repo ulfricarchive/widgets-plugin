@@ -61,7 +61,9 @@ public final class Scoreboard { // TODO ensure not saving to scoreboard.dat?
 		Objects.requireNonNull(player, "player");
 
 		Scoreboard scoreboard = SCOREBOARDS.remove(player.getUniqueId());
-		scoreboard.players.remove(player);
+		if (scoreboard != null) {
+			scoreboard.players.remove(player);
+		}
 	}
 
 	public static Optional<Scoreboard> getScoreboard(Player player) {
@@ -138,7 +140,7 @@ public final class Scoreboard { // TODO ensure not saving to scoreboard.dat?
 				}
 
 				Text text = element.apply(agent);
-				List<String> content = style.apply(text);
+				List<String> content = text == null ? Collections.emptyList() : style.apply(text);
 				entry.displayContent(content);
 
 				break;
