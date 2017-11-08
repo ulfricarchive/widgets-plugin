@@ -7,6 +7,7 @@ public class WidgetsPlugin extends Plugin {
 	public WidgetsPlugin() {
 		install(DashboardsTickLoopContainer.class);
 		install(DashboardsCleanupListener.class);
+		install(BukkitScoreboardInitializeListener.class);
 	}
 
 }

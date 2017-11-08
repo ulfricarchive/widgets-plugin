@@ -11,7 +11,6 @@ import org.bukkit.scoreboard.Team;
 
 import com.ulfric.fancymessage.Message;
 import com.ulfric.plugin.locale.LocaleService;
-import com.ulfric.plugin.widgets.Dashboard;
 import com.ulfric.plugin.widgets.Dashboards;
 import com.ulfric.plugin.widgets.Widget;
 import com.ulfric.plugin.widgets.scoreboard.text.ScoreboardStyle;
@@ -19,7 +18,7 @@ import com.ulfric.plugin.widgets.text.Style;
 import com.ulfric.plugin.widgets.text.graph.Entry;
 import com.ulfric.plugin.widgets.text.graph.Row;
 
-public final class Scoreboard extends Dashboard {
+public final class Scoreboard extends ScoreboardDashboard {
 
 	private static final String DUMMY_CRITERIA = "dummy";
 
@@ -33,21 +32,16 @@ public final class Scoreboard extends Dashboard {
 			return scoreboard;
 		}
 
-		org.bukkit.scoreboard.Scoreboard display = ScoreboardHelper.getNewBukkitScoreboard();
 		String title = Message.toLegacy(LocaleService.getMessage(dashboards.getViewer(), "scoreboard-title"));
 
-		scoreboard = new Scoreboard(dashboards, display, title);
-		dashboards.getViewer().setScoreboard(display);
+		scoreboard = new Scoreboard(dashboards, title);
 		return scoreboard;
 	}
 
-	private final org.bukkit.scoreboard.Scoreboard scoreboard;
 	private final Objective objective;
 
-	private Scoreboard(Dashboards owner, org.bukkit.scoreboard.Scoreboard scoreboard, String title) {
+	private Scoreboard(Dashboards owner, String title) {
 		super(owner);
-
-		this.scoreboard = scoreboard;
 
 		this.objective = scoreboard.registerNewObjective(title, DUMMY_CRITERIA);
 		this.objective.setDisplaySlot(DisplaySlot.SIDEBAR);

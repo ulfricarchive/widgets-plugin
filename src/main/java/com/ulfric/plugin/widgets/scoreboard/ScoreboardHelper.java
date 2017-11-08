@@ -1,27 +1,13 @@
 package com.ulfric.plugin.widgets.scoreboard;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.scoreboard.ScoreboardManager;
-
 import java.util.Random;
+
+import org.bukkit.ChatColor;
 
 public class ScoreboardHelper {
 
 	private static final Random RANDOM = new Random();
 	private static final ChatColor[] COLORS = ChatColor.values();
-
-	public static org.bukkit.scoreboard.Scoreboard getBukkitGlobalScoreboard() {
-		return defaultManager().getMainScoreboard();
-	}
-
-	public static org.bukkit.scoreboard.Scoreboard getNewBukkitScoreboard() {
-		return defaultManager().getNewScoreboard();
-	}
-
-	public static ScoreboardManager defaultManager() {
-		return Bukkit.getScoreboardManager();
-	}
 
 	public static String randomInvisibleEntry() {
 		int length = COLORS.length;
