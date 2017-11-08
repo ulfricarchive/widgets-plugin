@@ -1,2 +1,2 @@
-# scoreboard-plugin
-Minecraft scoreboard framework
+# widgets-plugin
+Minecraft dashboard framework
