@@ -11,7 +11,7 @@
 	</parent>
 
 	<groupId>com.ulfric.plugin</groupId>
-	<artifactId>scoreboard-plugin</artifactId>
+	<artifactId>widgets-plugin</artifactId>
 	<version>1.0.0</version>
 
 	<dependencies>

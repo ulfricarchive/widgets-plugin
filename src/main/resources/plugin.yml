@@ -1,5 +1,5 @@
-name: Scoreboard
-main: com.ulfric.plugin.scoreboard.ScoreboardPlugin
+name: Widgets
+main: com.ulfric.plugin.widgets.WidgetsPlugin
 version: 1.0.0
 author: Ulfric LLC
 depend: [Platform, Services, Tasks, Locale]

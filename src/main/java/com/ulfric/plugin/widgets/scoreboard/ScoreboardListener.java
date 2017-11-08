@@ -1,4 +1,4 @@
-package com.ulfric.plugin.scoreboard;
+package com.ulfric.plugin.widgets.scoreboard;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -9,7 +9,7 @@ public class ScoreboardListener implements Listener {
 
 	@EventHandler
 	public void on(PlayerJoinEvent event) {
-		Scoreboard.create(event.getPlayer());
+		Scoreboard.getScoreboard(event.getPlayer());
 	}
 
 	@EventHandler

@@ -1,4 +1,4 @@
-package com.ulfric.plugin.scoreboard;
+package com.ulfric.plugin.widgets.scoreboard;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

@@ -1,7 +1,8 @@
-package com.ulfric.plugin.scoreboard.customize;
+package com.ulfric.plugin.widgets.widgets.customize;
 
-import com.ulfric.plugin.scoreboard.text.StandardStyles;
 import com.ulfric.plugin.services.Service;
+import com.ulfric.plugin.widgets.scoreboard.text.ScoreboardStyle;
+import com.ulfric.plugin.widgets.tab.text.TabStyle;
 
 import java.util.UUID;
 
@@ -19,7 +20,8 @@ public class OptionsService implements Service<OptionsService> {
 	public Options getOptions(UUID uniqueId) { // TODO actually allow, use database
 		Options options = new Options();
 
-		options.setStyle(StandardStyles.FLAT);
+		options.setScoreboardStyle(ScoreboardStyle.FLAT);
+		options.setTabStyle(TabStyle.FLAT);
 
 		return options;
 	}

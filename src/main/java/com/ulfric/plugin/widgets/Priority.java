@@ -1,4 +1,4 @@
-package com.ulfric.plugin.scoreboard.element;
+package com.ulfric.plugin.widgets;
 
 public enum Priority {
 

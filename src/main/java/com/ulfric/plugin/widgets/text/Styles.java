@@ -1,6 +1,8 @@
-package com.ulfric.plugin.scoreboard.text;
+package com.ulfric.plugin.widgets.text;
 
 import org.apache.commons.collections4.map.CaseInsensitiveMap;
+
+import com.ulfric.plugin.widgets.scoreboard.text.ScoreboardStyle;
 
 import java.util.Map;
 import java.util.Objects;
@@ -10,7 +12,7 @@ public class Styles {
 	private static final Map<String, Style> STYLES = new CaseInsensitiveMap<>();
 
 	static {
-		for (Style style : StandardStyles.values()) {
+		for (Style style : ScoreboardStyle.values()) {
 			register(style);
 		}
 	}

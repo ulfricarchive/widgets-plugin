@@ -1,28 +1,28 @@
-package com.ulfric.plugin.scoreboard.element;
+package com.ulfric.plugin.widgets;
 
 import org.bukkit.entity.Player;
 
-import com.ulfric.plugin.scoreboard.text.Text;
+import com.ulfric.plugin.widgets.text.Text;
 
 import java.util.Objects;
 import java.util.function.Function;
 
-public abstract class Element implements Function<Player, Text>, Comparable<Element> {
+public abstract class Widget implements Function<Player, Text>, Comparable<Widget> {
 
 	private final Priority priority;
 
-	public Element() {
+	public Widget() {
 		this(Priority.NORMAL);
 	}
 
-	public Element(Priority priority) {
+	public Widget(Priority priority) {
 		Objects.requireNonNull(priority, "priority");
 
 		this.priority = priority;
 	}
 
 	@Override
-	public final int compareTo(Element other) {
+	public final int compareTo(Widget other) {
 		return priority.compareTo(other.priority);
 	}
 

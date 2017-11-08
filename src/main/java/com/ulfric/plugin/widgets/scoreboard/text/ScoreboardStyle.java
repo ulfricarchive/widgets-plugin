@@ -1,20 +1,19 @@
-package com.ulfric.plugin.scoreboard.text;
+package com.ulfric.plugin.widgets.scoreboard.text;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public enum StandardStyles implements Style { // TODO text wrapping
+import com.ulfric.plugin.widgets.text.Style;
+import com.ulfric.plugin.widgets.text.Text;
+import com.ulfric.plugin.widgets.text.TextHelper;
+
+public enum ScoreboardStyle implements Style {
 
 	FLAT { // TODO duplicate code with HEADER
 		@Override
 		public List<String> apply(Text entry) {
-			List<String> styled = new ArrayList<>();
-			styled.add(BLANK_LINE);
-
-			if (entry.getTitle() != null) {
-				styled.add(entry.getTitle());
-			}
+			List<String> styled = createStyledWithTitle(entry);
 
 			if (entry.getBody() != null) {
 				styled.addAll(entry.getBody());
@@ -27,12 +26,7 @@ public enum StandardStyles implements Style { // TODO text wrapping
 	HEADER { // TODO duplicate code with FLAT
 		@Override
 		public List<String> apply(Text entry) {
-			List<String> styled = new ArrayList<>();
-			styled.add(BLANK_LINE);
-
-			if (entry.getTitle() != null) {
-				styled.add(entry.getTitle());
-			}
+			List<String> styled = createStyledWithTitle(entry);
 
 			if (entry.getBody() != null) {
 				entry.getBody().stream()
@@ -49,13 +43,22 @@ public enum StandardStyles implements Style { // TODO text wrapping
 		public List<String> apply(Text entry) {
 			return entry.getBody() == null ? Collections.emptyList() : entry.getBody();
 		}
-	}; // TODO "TREE" style
+	};
 
-	public static StandardStyles defaultStyle() {
-		return FLAT;
+	private static List<String> createStyledWithTitle(Text entry) {
+		List<String> styled = new ArrayList<>();
+		styled.add(TextHelper.BLANK_LINE);
+
+		if (entry.getTitle() != null) {
+			styled.add(entry.getTitle());
+		}
+
+		return styled;
 	}
 
-	private static final String BLANK_LINE = "";
+	public static ScoreboardStyle defaultStyle() {
+		return FLAT;
+	}
 
 	@Override
 	public final String getName() {

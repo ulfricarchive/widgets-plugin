@@ -1,4 +1,4 @@
-package com.ulfric.plugin.scoreboard.text;
+package com.ulfric.plugin.widgets.text;
 
 import com.ulfric.commons.naming.Named;
 
