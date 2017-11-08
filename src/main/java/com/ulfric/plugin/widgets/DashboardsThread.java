@@ -1,7 +1,6 @@
 package com.ulfric.plugin.widgets;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 final class DashboardsThread extends Thread { // TODO should this run in the bukkit scheduler?
@@ -12,9 +11,9 @@ final class DashboardsThread extends Thread { // TODO should this run in the buk
 
 	@Override
 	public void run() {
-		Collection<List<Dashboard>> dashboards = Dashboard.getAllDashboardsMutableView();
+		Collection<Dashboards> dashboards = Dashboards.getAllDashboardsMutableView();
 		while (running()) {
-			dashboards.forEach(this::updateAll);
+			dashboards.forEach(this::update);
 		}
 	}
 
@@ -28,12 +27,7 @@ final class DashboardsThread extends Thread { // TODO should this run in the buk
 		}
 	}
 
-	private void updateAll(List<Dashboard> dashboards) {
-		dashboards.forEach(this::update);
-	}
-
-	private void update(Dashboard dashboard) {
-		dashboard.queueUpdate(TimerWidget.class);
+	private void update(Dashboards dashboard) {
 		dashboard.update();
 	}
 

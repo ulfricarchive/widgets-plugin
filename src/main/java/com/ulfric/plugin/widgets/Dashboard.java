@@ -1,67 +1,37 @@
 package com.ulfric.plugin.widgets;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentMap;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.apache.commons.collections4.SetUtils;
 import org.bukkit.entity.Player;
 
-import com.ulfric.commons.collection.MapHelper;
 import com.ulfric.plugin.widgets.text.Style;
 import com.ulfric.plugin.widgets.text.Text;
 import com.ulfric.plugin.widgets.text.TextHelper;
 import com.ulfric.plugin.widgets.text.graph.Entry;
-import com.ulfric.plugin.widgets.widgets.customize.Options;
-import com.ulfric.plugin.widgets.widgets.customize.OptionsService;
 
 public abstract class Dashboard {
 
-	private static final ConcurrentMap<UUID, List<Dashboard>> DASHBOARDS = MapHelper.newConcurrentMap(2);
-
-	static Collection<List<Dashboard>> getAllDashboardsMutableView() { // TODO better solution
-		return DASHBOARDS.values();
-	}
-
-	public static List<Dashboard> getDashboards(Player player) {
-		return getDashboards(player.getUniqueId());
-	}
-
-	public static List<Dashboard> getDashboards(UUID player) {
-		List<Dashboard> dashboards = DASHBOARDS.get(player);
-
-		if (dashboards == null) {
-			return Collections.emptyList();
-		}
-
-		return dashboards;
-	}
-
-	protected final Player viewer;
-	protected final Options options;
+	protected final Dashboards owner;
 	protected final Set<Class<? extends Widget>> update = SetUtils.newIdentityHashSet();
 	protected final Set<Widget> removed = SetUtils.newIdentityHashSet();
 	protected final List<Entry> entries = new ArrayList<>();
 
-	public Dashboard(Player viewer) {
-		Objects.requireNonNull(viewer, "viewer");
+	public Dashboard(Dashboards owner) {
+		Objects.requireNonNull(owner, "owner");
 
-		this.viewer = viewer;
-		this.options = OptionsService.get().getOptions(viewer.getUniqueId()); // TODO handle failures
+		this.owner = owner;
 
 		register();
 	}
 
 	protected void register() {
-		DASHBOARDS.computeIfAbsent(viewer.getUniqueId(), ignore -> new CopyOnWriteArrayList<>())
-			.add(this);
+		owner.add(this);
 	}
 
 	public final void queueUpdate(Class<? extends Widget> widget) {
@@ -99,6 +69,7 @@ public abstract class Dashboard {
 	}
 
 	private void processUpdates() {
+		Player viewer = owner.getViewer();
 		Style style = getStyle();
 		for (Entry entry : entries) {
 			for (Class<? extends Widget> update : this.update) {
@@ -109,7 +80,7 @@ public abstract class Dashboard {
 
 				Text text = widget.apply(viewer);
 				List<String> content = text == null ? Collections.emptyList() : style.apply(text);
-				content = TextHelper.wrap(content, 32); // TODO support 48
+				content = TextHelper.wrap(content, getMaxLineLength());
 				entry.displayContent(content);
 
 				break;
@@ -137,5 +108,7 @@ public abstract class Dashboard {
 	protected abstract Entry createEntry(Widget widget);
 
 	protected abstract Style getStyle();
+
+	protected abstract int getMaxLineLength();
 
 }
