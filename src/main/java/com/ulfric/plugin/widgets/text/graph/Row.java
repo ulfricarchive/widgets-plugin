@@ -1,11 +1,15 @@
 package com.ulfric.plugin.widgets.text.graph;
 
-public abstract class Row {
+public interface Row {
 
-	public abstract void setPosition(int position);
+	void setPosition(int position);
 
-	public abstract void unregister();
+	void unregister();
 
-	public abstract void display(String text);
+	void clear();
+
+	void display(String text);
+
+	String getText();
 
 }

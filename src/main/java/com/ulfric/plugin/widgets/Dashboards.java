@@ -43,10 +43,7 @@ public final class Dashboards {
 	}
 
 	public void update() {
-		dashboards.forEach(dashboard -> {
-			dashboard.queueUpdate(TimerWidget.class);
-			dashboard.update();
-		});
+		dashboards.forEach(Dashboard::update);
 	}
 
 	public Player getViewer() {

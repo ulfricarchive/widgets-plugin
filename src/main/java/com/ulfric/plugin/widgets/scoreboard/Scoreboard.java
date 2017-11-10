@@ -2,6 +2,8 @@ package com.ulfric.plugin.widgets.scoreboard;
 
 import java.util.Iterator;
 import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.commons.collections4.iterators.ReverseListIterator;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -98,15 +100,14 @@ public final class Scoreboard extends ScoreboardDashboard {
 		}
 	}
 
-	private final class ScoreboardRow extends Row {
-		private final Team team;
+	private final class ScoreboardRow implements Row {
+		private final Team team = ScoreboardHelper.createRandomTeam(scoreboard);
 		private final Score score;
 
 		ScoreboardRow() {
-			String entry = ScoreboardHelper.randomInvisibleEntry(); // TODO validate uniqueness
-			this.team = scoreboard.registerNewTeam(entry);
-			this.team.addEntry(entry);
-			this.score = objective.getScore(entry);
+			String entry = team.getName(); // TODO validate uniqueness
+			team.addEntry(entry);
+			score = objective.getScore(entry);
 		}
 
 		@Override
@@ -122,6 +123,11 @@ public final class Scoreboard extends ScoreboardDashboard {
 
 		@Override
 		public void display(String text) {
+			if (text == null) {
+				clear();
+				return;
+			}
+
 			if (isBig(text)) {
 				displayBig(text);
 				return;
@@ -147,6 +153,19 @@ public final class Scoreboard extends ScoreboardDashboard {
 			if (team.getSuffix() != null) {
 				team.setSuffix("");
 			}
+		}
+
+		@Override
+		public void clear() {
+			team.setPrefix("");
+			team.setSuffix("");
+		}
+
+		@Override
+		public String getText() {
+			return Stream.of(team.getPrefix(), team.getSuffix())
+					.filter(Objects::nonNull)
+					.collect(Collectors.joining());
 		}
 	}
 

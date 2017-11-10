@@ -28,7 +28,7 @@ public abstract class Entry implements Comparable<Entry> {
 		resizeTo(content.size());
 
 		List<Row> rows = this.rows;
-		for (int x = 0, l = content.size(); x < l; x++) { // TODO "parallel iterator"
+		for (int x = 0, l = content.size(); x < l; x++) {
 			rows.get(x).display(content.get(x));
 		}
 	}
