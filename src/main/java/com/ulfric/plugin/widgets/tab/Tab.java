@@ -71,14 +71,17 @@ public class Tab extends ScoreboardDashboard {
 		return new TabRow(column, index);
 	}
 
-	private class TabEntry extends Entry { // TODO prevent rows from leaving the same column unless shifting the entire entry
+	private class TabEntry extends Entry {
+		private final TabColumn column; // TODO make this dynamically change based on the rest of the tab menu
+
 		TabEntry(Widget widget) {
 			super(widget);
+
+			this.column = columns.getFreeSpace();
 		}
 
 		@Override
 		protected Row createRow() {
-			TabColumn column = columns.getFreeSpace();
 			if (column == null) {
 				return null;
 			}
