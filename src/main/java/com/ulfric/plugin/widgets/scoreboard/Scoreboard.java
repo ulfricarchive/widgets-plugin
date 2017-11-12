@@ -76,7 +76,7 @@ public final class Scoreboard extends ScoreboardDashboard {
 	}
 
 	private void updateScores() {
-		int score = 0;
+		int score = 1;
 		Iterator<Entry> entries = new ReverseListIterator<>(this.entries);
 		while (entries.hasNext()) {
 			Entry entry = entries.next();
