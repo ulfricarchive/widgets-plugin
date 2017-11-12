@@ -2,7 +2,6 @@ package com.ulfric.plugin.widgets.tab;
 
 import java.util.Objects;
 
-import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Team;
 
 import com.ulfric.plugin.widgets.Dashboards;
@@ -15,8 +14,6 @@ import com.ulfric.plugin.widgets.text.graph.Entry;
 import com.ulfric.plugin.widgets.text.graph.Row;
 
 public class Tab extends ScoreboardDashboard {
-
-	private static final int TOTAL_TAB_ENTRIES = 60;
 
 	public static Tab getTab(Dashboards dashboards) {
 		// TODO lock the dashboards to prevent adding duplicate tabs.
@@ -46,20 +43,6 @@ public class Tab extends ScoreboardDashboard {
 	@Override
 	protected int getMaxLineLength() {
 		return 16;
-	}
-
-	@Override
-	protected void register() {
-		super.register();
-
-		createEmptyRows();
-	}
-
-	private void createEmptyRows() {
-		Player viewer = owner.getViewer();
-		for (int x = 0; x < TOTAL_TAB_ENTRIES; x++) {
-			viewer.addPlayerListEntry(ScoreboardHelper.randomInvisibleEntry()); // TODO cache these to avoid random generation 60x for every new tab
-		}
 	}
 
 	@Override
@@ -98,6 +81,9 @@ public class Tab extends ScoreboardDashboard {
 		TabRow(TabColumn column, int index) {
 			this.column = column;
 			this.index = index;
+
+			team.addEntry(team.getName());
+			owner.getViewer().addPlayerListEntry(team.getName());
 		}
 
 		@Override

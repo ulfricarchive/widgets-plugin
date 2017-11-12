@@ -12,6 +12,16 @@ final class TabColumns { // TODO use max player count to control numbers
 		this.columns = Stream.generate(() -> new TabColumn(tab))
 				.limit(3)
 				.collect(Collectors.toList()); 
+
+		generate();
+	}
+
+	private void generate() {
+		for (int x = 0; x < 20; x++) {
+			for (TabColumn column : columns) {
+				column.generate(x);
+			}
+		}
 	}
 
 	public TabColumn getFreeSpace() {

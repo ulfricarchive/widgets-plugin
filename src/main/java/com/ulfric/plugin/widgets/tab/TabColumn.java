@@ -1,8 +1,7 @@
 package com.ulfric.plugin.widgets.tab;
 
+import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import com.ulfric.plugin.widgets.tab.Tab.TabRow;
 import com.ulfric.plugin.widgets.text.graph.Row;
@@ -12,12 +11,16 @@ public class TabColumn {
 	// TODO cleanup
 	// TODO optimize
 
-	private final List<TabRow> rows;
+	private final Tab tab;
+	private final List<TabRow> rows = Arrays.asList(new TabRow[20]);
 	private int nextAvailableRow;
 
 	TabColumn(Tab tab) {
-		this.rows = IntStream.range(0, 20).mapToObj(index -> tab.createRow(this, index))
-				.collect(Collectors.toList());
+		this.tab = tab;
+	}
+
+	void generate(int index) {
+		rows.set(index, tab.createRow(this, index));
 	}
 
 	public int getSpace() {
