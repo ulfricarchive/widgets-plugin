@@ -12,10 +12,11 @@ public class ScoreboardHelper {
 
 	public static String randomInvisibleEntry() {
 		int length = COLORS.length;
-		StringBuilder builder = new StringBuilder(16); // TODO document 16 and 8 values
-		for (int x = 0; x < 8; x++) {
+		StringBuilder builder = new StringBuilder(14); // TODO document 16 and 8 values
+		for (int x = 0; x < 7; x++) {
 			builder.append(COLORS[RANDOM.nextInt(length)]);
 		}
+		builder.append(ChatColor.RESET);
 		return builder.toString();
 	}
 

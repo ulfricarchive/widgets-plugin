@@ -21,7 +21,9 @@ public class TextHelper {
 				continue;
 			}
 
-			wrapped.addAll(splitter.splitToList(line));
+			for (String split : splitter.splitToList(line)) {
+				wrapped.add(split.trim());
+			}
 		}
 
 		return wrapped;
