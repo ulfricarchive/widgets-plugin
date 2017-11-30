@@ -33,7 +33,7 @@ public abstract class Entry implements Comparable<Entry> {
 		}
 	}
 
-	private void resizeTo(int size) {
+	protected void resizeTo(int size) {
 		int currentSize = rows.size();
 
 		if (currentSize == size) {
